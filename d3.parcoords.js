@@ -24,7 +24,8 @@ d3.parcoords = function(config) {
     hideAxis : [],
     flipAxes: [],
     animationTime: 1100, // How long it takes to flip the axis when you double click
-    rotateLabels: false
+    rotateLabels: false,
+		numberExtent: null
   };
 
   extend(__, config);
@@ -215,7 +216,13 @@ pc.autoscale = function() {
         .range(getRange());
     },
     "number": function(k) {
-      var extent = d3.extent(__.data, function(d) { return +d[k]; });
+			var extent;
+			if(__.numberExtent != null){
+				extent = __.numberExtent;
+
+			} else {
+      	extent = d3.extent(__.data, function(d) { return +d[k]; });
+			}
 
       // special case if single value
       if (extent[0] === extent[1]) {
